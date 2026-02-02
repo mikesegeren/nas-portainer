@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${DOCKER_DATA}/homeassistant/config:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}

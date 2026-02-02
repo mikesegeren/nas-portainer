@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  heimdall:
+    image: linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${DOCKER_DATA}/heimdall/config:/config
+    ports:
+      - 8080:80
+    restart: unless-stopped
+
+  it-tools:
+    image: corentinth/it-tools:latest
+    container_name: it-tools
+    restart: unless-stopped
+    ports:
+      - "8088:80"
+
+  glance:
+    image: glanceapp/glance:latest
+    container_name: glance
+    restart: unless-stopped
+    ports:
+      - "8089:8080"
+    volumes:
+      - ${DOCKER_DATA}/glance/config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
