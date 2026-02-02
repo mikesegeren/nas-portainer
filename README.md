@@ -6,7 +6,7 @@ Docker Compose stacks for UGREEN NAS, managed via Portainer. Stacks are grouped 
 
 | Stack            | Compose path                             | Services                                                                        |
 | ---------------- | ---------------------------------------- | ------------------------------------------------------------------------------- |
-| **infra**        | `stacks/infra/docker-compose.yml`        | heimdall (8080), it-tools (8088), glance (8089)                                 |
+| **infra**        | `stacks/infra/docker-compose.yml`        | heimdall (8080), it-tools (8088), glance (8089), homarr (7575)                  |
 | **home**         | `stacks/home/docker-compose.yml`         | home-assistant (host)                                                           |
 | **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, readarr, prowlarr, qbittorrent, sabnzbd |
 | **productivity** | `stacks/productivity/docker-compose.yml` | obsidian (3000)                                                                 |
@@ -23,6 +23,7 @@ Docker Compose stacks for UGREEN NAS, managed via Portainer. Stacks are grouped 
    - `PUID`, `PGID` – from `id` on the NAS
    - `TZ` – e.g. `Europe/Amsterdam`
    - For **media** stack only (qbittorrent): `VPN_USER`, `VPN_PASS`, `LAN_NETWORK`
+   - For **infra** stack (Homarr): `HOMARR_SECRET_ENCRYPTION_KEY` (64-char hex, e.g. `openssl rand -hex 32`)
 
 ## Setup
 
