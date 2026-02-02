@@ -79,7 +79,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${DOCKER_DATA}/readarr:/config
+      - ${DOCKER_DATA}/readarr/config:/config
       - ${MEDIA_PATH}:/downloads
     ports:
       - 8787:8787
