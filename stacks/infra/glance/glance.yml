@@ -52,6 +52,12 @@ pages:
               - title: Portainer
                 url: http://192.168.1.116:19000
                 icon: si:portainer
+              - title: Vaultwarden
+                url: http://192.168.1.116:8082
+                icon: si:bitwarden
+              - title: Nginx Proxy Manager
+                url: http://192.168.1.116:81
+                icon: si:nginx
               - title: Home Assistant
                 url: http://192.168.1.116:8123
                 icon: si:homeassistant
@@ -82,9 +88,6 @@ pages:
               - title: IT-Tools
                 url: http://192.168.1.116:8088
                 icon: sh:it-tools
-              - title: Obsidian
-                url: http://192.168.1.116:3000
-                icon: si:obsidian
 
           - type: docker-containers
             title: Container Status
@@ -101,6 +104,16 @@ pages:
                 name: Portainer
                 url: http://192.168.1.116:19000
                 icon: si:portainer
+                hide: false
+              vaultwarden:
+                name: Vaultwarden
+                url: http://192.168.1.116:8082
+                icon: si:bitwarden
+                hide: false
+              nginx-proxy-manager:
+                name: Nginx Proxy Manager
+                url: http://192.168.1.116:81
+                icon: si:nginx
                 hide: false
               homeassistant:
                 name: Home Assistant
@@ -156,11 +169,6 @@ pages:
                 name: IT-Tools
                 url: http://192.168.1.116:8088
                 icon: sh:it-tools
-                hide: false
-              obsidian:
-                name: Obsidian
-                url: http://192.168.1.116:3000
-                icon: si:obsidian
                 hide: false
 
       # ─────────────── RIGHT ───────────────

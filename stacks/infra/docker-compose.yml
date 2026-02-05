@@ -17,3 +17,31 @@ services:
     volumes:
       - ./glance:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    # Expose for direct LAN access; optional if you only use HTTPS via NPM
+    ports:
+      - "8082:80"
+    volumes:
+      - ${DOCKER_DATA}/vaultwarden/data:/data
+    environment:
+      - SIGNUPS_ALLOWED=${VAULTWARDEN_SIGNUPS_ALLOWED:-true}
+      - ADMIN_TOKEN=${VAULTWARDEN_ADMIN_TOKEN}
+      # Required when behind HTTPS proxy (set to your public URL, e.g. https://vault.example.com)
+      - DOMAIN=${VAULTWARDEN_DOMAIN}
+      - WEBSOCKET_ENABLED=true
+
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - "80:80"    # HTTP
+      - "443:443"  # HTTPS
+      - "81:81"   # Admin UI
+    volumes:
+      - ${DOCKER_DATA}/nginx-proxy-manager/data:/data
+      - ${DOCKER_DATA}/nginx-proxy-manager/letsencrypt:/etc/letsencrypt

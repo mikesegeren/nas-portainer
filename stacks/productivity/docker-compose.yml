@@ -1,16 +1,15 @@
 version: "3.9"
 
 services:
-  obsidian:
-    image: linuxserver/obsidian
-    container_name: obsidian
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${DOCKER_DATA}/obsidian/config:/config
-      - ${DOCKER_DATA}/obsidian/vaults:/vaults
-    ports:
-      - 3000:3000
+  obsidian-db:
+    # CouchDB backend for Obsidian LiveSync plugin (self-hosted sync)
+    image: couchdb:3
+    container_name: obsidian-db
     restart: unless-stopped
+    environment:
+      - COUCHDB_USER=${OBSIDIAN_DB_USER}
+      - COUCHDB_PASSWORD=${OBSIDIAN_DB_PASSWORD}
+    volumes:
+      - ${DOCKER_DATA}/obsidian/couchdb:/opt/couchdb/data
+    ports:
+      - 5984:5984
