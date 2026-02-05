@@ -39,8 +39,8 @@ services:
     container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
-      - "80:80"      # HTTP (Let's Encrypt challenge)
-      - "8443:443"  # HTTPS (use 8443 if host 443 is already in use; else change to 443:443)
+      - "8080:80"   # HTTP (host 80 in use; for Let's Encrypt, forward 80→8080 on router or use DNS challenge)
+      - "8443:443"  # HTTPS (host 443 in use; forward 443→8443 on router or use https://domain:8443)
       - "81:81"     # Admin UI
     volumes:
       - ${DOCKER_DATA}/nginx-proxy-manager/data:/data

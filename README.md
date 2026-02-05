@@ -4,14 +4,41 @@ Docker Compose stacks for UGREEN NAS, managed via Portainer. Stacks are grouped 
 
 ## Stacks
 
-| Stack            | Compose path                             | Services                                                                                                                               |
-| ---------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| **infra**        | `stacks/infra/docker-compose.yml`        | glance (8089), it-tools (8088), vaultwarden (8082), nginx-proxy-manager (80/8443/81). Glance config: `stacks/infra/glance/glance.yml`. |
-| **home**         | `stacks/home/docker-compose.yml`         | home-assistant (host)                                                                                                                  |
-| **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, readarr, prowlarr, qbittorrent, sabnzbd                                                        |
-| **productivity** | `stacks/productivity/docker-compose.yml` | obsidian-db (5984 – CouchDB backend for Obsidian LiveSync/self-hosted)                                                                 |
+| Stack            | Compose path                             | Services                                                                                                                                 |
+| ---------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **infra**        | `stacks/infra/docker-compose.yml`        | glance (8089), it-tools (8088), vaultwarden (8082), nginx-proxy-manager (8080/8443/81). Glance config: `stacks/infra/glance/glance.yml`. |
+| **home**         | `stacks/home/docker-compose.yml`         | home-assistant (host)                                                                                                                    |
+| **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, readarr, prowlarr, qbittorrent, sabnzbd                                                          |
+| **productivity** | `stacks/productivity/docker-compose.yml` | obsidian-db (5984 – CouchDB backend for Obsidian LiveSync/self-hosted)                                                                   |
 
 **Media ports:** jellyfin 8096/8920, ombi 3579, sonarr 8989, radarr 7878, lidarr 8686, readarr 8787, prowlarr 9696, qbittorrent 8090/6881, sabnzbd 8081.
+
+### Port mapping reference (no collisions)
+
+All host ports used by the stacks in this repo (check here before adding new services):
+
+| Host port | Stack        | Service                        |
+| --------: | ------------ | ------------------------------ |
+|        81 | infra        | nginx-proxy-manager (admin UI) |
+|      3579 | media        | ombi                           |
+|      5984 | productivity | obsidian-db (CouchDB)          |
+|      7878 | media        | radarr                         |
+|      8080 | infra        | nginx-proxy-manager (HTTP)     |
+|      8081 | media        | sabnzbd                        |
+|      8082 | infra        | vaultwarden                    |
+|      8088 | infra        | it-tools                       |
+|      8089 | infra        | glance                         |
+|      8090 | media        | qbittorrent (Web UI)           |
+|      8096 | media        | jellyfin                       |
+|      8443 | infra        | nginx-proxy-manager (HTTPS)    |
+|      8686 | media        | lidarr                         |
+|      8787 | media        | readarr                        |
+|      8920 | media        | jellyfin (HTTPS)               |
+|      8989 | media        | sonarr                         |
+|      9696 | media        | prowlarr                       |
+|      6881 | media        | qbittorrent (BT TCP+UDP)       |
+
+Not in these stacks (host/other): **Portainer** 19000, **Home Assistant** 8123 (host network). The NAS may also use **80** and **443** (hence NPM uses 8080/8443).
 
 ## Before connecting to Portainer
 
@@ -53,7 +80,7 @@ Override via `.env` (or Portainer env vars) so you don’t need to edit the YAML
 
 ### HTTPS with Nginx Proxy Manager
 
-Vaultwarden (and other services) can be exposed over HTTPS using **Nginx Proxy Manager** (NPM) in the infra stack. NPM is set to use **host port 8443** for HTTPS (instead of 443) so it doesn’t conflict with whatever is already using 443 on your NAS. To use standard HTTPS port 443, either stop that service and change the compose mapping to `443:443`, or on your router forward external port 443 to internal **8443**.
+Vaultwarden (and other services) can be exposed over HTTPS using **Nginx Proxy Manager** (NPM) in the infra stack. NPM is set to use **host ports 8080 (HTTP) and 8443 (HTTPS)** because 80 and 443 are already in use on the NAS. For Let’s Encrypt HTTP-01, forward external port 80 to internal **8080** on your router (or use a DNS challenge in NPM). For HTTPS, forward external 443 to **8443**, or use `https://domain:8443`. To use standard ports, free 80/443 on the host and change the compose mappings to `80:80` and `443:443`.
 
 1. **Deploy the infra stack** so NPM is running. Open the admin UI at **http://&lt;NAS-IP&gt;:81**.
 2. **First login:** `admin@example.com` / `changelog` — change these immediately in the profile.
