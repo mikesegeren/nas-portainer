@@ -1,5 +1,10 @@
 version: "3.9"
 
+networks:
+  default:
+    name: infra-network
+    driver: bridge
+
 services:
   it-tools:
     image: corentinth/it-tools:latest
@@ -7,6 +12,8 @@ services:
     restart: unless-stopped
     ports:
       - "8088:80"
+    networks:
+      - default
 
   glance:
     image: glanceapp/glance:latest
@@ -17,6 +24,8 @@ services:
     volumes:
       - ${DOCKER_DATA}/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - default
 
   vaultwarden:
     image: vaultwarden/server:latest
@@ -33,6 +42,8 @@ services:
       # Required when behind HTTPS proxy (set to your public URL, e.g. https://vault.example.com)
       - DOMAIN=${VAULTWARDEN_DOMAIN}
       - WEBSOCKET_ENABLED=true
+    networks:
+      - default
 
   nginx-proxy-manager:
     image: jc21/nginx-proxy-manager:latest
@@ -45,3 +56,5 @@ services:
     volumes:
       - ${DOCKER_DATA}/nginx-proxy-manager/data:/data
       - ${DOCKER_DATA}/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+    networks:
+      - default
