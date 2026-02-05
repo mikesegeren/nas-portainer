@@ -108,4 +108,4 @@ NPM stores config under `DOCKER_DATA/nginx-proxy-manager` and certificates under
 
 ### Glance
 
-Glance config is in the repo at `stacks/infra/glance/glance.yml`. The container mounts this directory, so edits take effect automatically (no restart). If you had an existing config under `DOCKER_DATA/glance/config`, copy its contents into `stacks/infra/glance/glance.yml` before or after switching.
+Glance config lives on the NAS at **`${DOCKER_DATA}/glance/config`** (e.g. `/volume2/docker/glance/config`). Copy the contents of `stacks/infra/glance/` from this repo into that folder once (so `glance.yml` is at `…/glance/config/glance.yml`), then deploy. Edit the config on the NAS; Glance reloads on save. The repo’s `stacks/infra/glance/` is a reference copy.

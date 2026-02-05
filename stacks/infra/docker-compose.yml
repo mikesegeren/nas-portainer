@@ -15,7 +15,7 @@ services:
     ports:
       - "8089:8080"
     volumes:
-      - ./glance:/app/config
+      - ${DOCKER_DATA}/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   vaultwarden:

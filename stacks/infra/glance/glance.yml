@@ -1,24 +1,65 @@
+# Coolest Glance dashboard — Dracula theme, dense layout, Feed page
 server:
   port: 8080
 
-# Theme: use HSL values (see https://github.com/glanceapp/glance/blob/main/docs/configuration.md)
+branding:
+  app-name: "Homelab"
+  custom-footer: "Breda · Glance"
+
+# Dracula default; switch via theme picker
 theme:
-  background-color: 240 8 9
-  primary-color: 43 50 70
-  contrast-multiplier: 1.1
+  background-color: 231 15 21
+  primary-color: 265 89 79
+  contrast-multiplier: 1.2
+  positive-color: 135 94 66
+  negative-color: 0 100 67
+  disable-picker: false
+  presets:
+    catppuccin-mocha:
+      background-color: 240 21 15
+      primary-color: 217 92 83
+      positive-color: 115 54 76
+      negative-color: 347 70 65
+      contrast-multiplier: 1.2
+    gruvbox:
+      background-color: 0 0 16
+      primary-color: 43 59 81
+      positive-color: 61 66 44
+      negative-color: 6 96 59
+    kanagawa:
+      background-color: 240 13 14
+      primary-color: 51 33 68
+      negative-color: 358 100 68
+      contrast-multiplier: 1.2
+    zebra:
+      light: true
+      background-color: 0 0 95
+      primary-color: 0 0 10
+      negative-color: 0 90 50
 
 pages:
   - name: Homelab
+    width: wide
     columns:
-      # ─────────────── LEFT ───────────────
       - size: small
         widgets:
           - type: clock
             hour-format: 24h
+            timezones:
+              - timezone: Europe/Amsterdam
+                label: Breda
+              - timezone: America/New_York
+                label: NYC
+              - timezone: UTC
+                label: UTC
+
+          - type: calendar
+            first-day-of-week: monday
 
           - type: weather
             location: Breda
             units: metric
+            hour-format: 12h
 
           - type: search
             search-engine: duckduckgo
@@ -26,7 +67,29 @@ pages:
 
           - type: bookmarks
             groups:
-              - name: Other
+              - title: Homelab
+                color: 265 89 79
+                links:
+                  - title: Glance
+                    url: http://192.168.1.116:8089
+                    icon: sh:glance-dark
+                  - title: Portainer
+                    url: http://192.168.1.116:19000
+                    icon: si:portainer
+                  - title: Vaultwarden
+                    url: http://192.168.1.116:8082
+                    icon: si:bitwarden
+                  - title: NPM
+                    url: http://192.168.1.116:81
+                    icon: si:nginx
+                  - title: Home Assistant
+                    url: http://192.168.1.116:8123
+                    icon: si:homeassistant
+                  - title: Jellyfin
+                    url: http://192.168.1.116:8096
+                    icon: si:jellyfin
+              - title: Other
+                color: 43 59 81
                 links:
                   - title: NAS
                     url: https://192.168.1.116
@@ -35,36 +98,213 @@ pages:
                     url: https://192.168.1.1
                     icon: si:ubiquiti
 
-      # ─────────────── CENTER ───────────────
       - size: full
         widgets:
           - type: server-stats
             servers:
               - type: local
                 name: Homelab Server
+                hide-mountpoints-by-default: true
+
+          - type: split-column
+            widgets:
+              - type: monitor
+                title: Services
+                cache: 1m
+                style: compact
+                sites:
+                  - title: Glance
+                    url: http://192.168.1.116:8089
+                    icon: sh:glance-dark
+                  - title: Portainer
+                    url: http://192.168.1.116:19000
+                    icon: si:portainer
+                  - title: Vaultwarden
+                    url: http://192.168.1.116:8082
+                    icon: si:bitwarden
+                  - title: NPM
+                    url: http://192.168.1.116:81
+                    icon: si:nginx
+                  - title: Home Assistant
+                    url: http://192.168.1.116:8123
+                    icon: si:homeassistant
+                  - title: Jellyfin
+                    url: http://192.168.1.116:8096
+                    icon: si:jellyfin
+                  - title: Sonarr
+                    url: http://192.168.1.116:8989
+                    icon: sh:sonarr
+                  - title: Radarr
+                    url: http://192.168.1.116:7878
+                    icon: sh:radarr
+                  - title: Lidarr
+                    url: http://192.168.1.116:8686
+                    icon: sh:lidarr
+                  - title: Readarr
+                    url: http://192.168.1.116:8787
+                    icon: sh:readarr
+                  - title: Prowlarr
+                    url: http://192.168.1.116:9696
+                    icon: sh:prowlarr
+                  - title: Ombi
+                    url: http://192.168.1.116:3579
+                    icon: sh:ombi
+                  - title: qBittorrent
+                    url: http://192.168.1.116:8090
+                    icon: si:qbittorrent
+                  - title: IT-Tools
+                    url: http://192.168.1.116:8088
+                    icon: sh:it-tools
+              - type: docker-containers
+                title: Containers
+                cache: 30s
+                sock-path: /var/run/docker.sock
+                hide-by-default: true
+                containers:
+                  glance:
+                    name: Glance
+                    url: http://192.168.1.116:8089
+                    icon: sh:glance-dark
+                    hide: false
+                  portainer:
+                    name: Portainer
+                    url: http://192.168.1.116:19000
+                    icon: si:portainer
+                    hide: false
+                  vaultwarden:
+                    name: Vaultwarden
+                    url: http://192.168.1.116:8082
+                    icon: si:bitwarden
+                    hide: false
+                  nginx-proxy-manager:
+                    name: NPM
+                    url: http://192.168.1.116:81
+                    icon: si:nginx
+                    hide: false
+                  homeassistant:
+                    name: Home Assistant
+                    url: http://192.168.1.116:8123
+                    icon: si:homeassistant
+                    hide: false
+                  sonarr:
+                    name: Sonarr
+                    url: http://192.168.1.116:8989
+                    icon: sh:sonarr
+                    hide: false
+                  radarr:
+                    name: Radarr
+                    url: http://192.168.1.116:7878
+                    icon: sh:radarr
+                    hide: false
+                  lidarr:
+                    name: Lidarr
+                    url: http://192.168.1.116:8686
+                    icon: sh:lidarr
+                    hide: false
+                  readarr:
+                    name: Readarr
+                    url: http://192.168.1.116:8787
+                    icon: sh:readarr
+                    hide: false
+                  prowlarr:
+                    name: Prowlarr
+                    url: http://192.168.1.116:9696
+                    icon: sh:prowlarr
+                    hide: false
+                  ombi:
+                    name: Ombi
+                    url: http://192.168.1.116:3579
+                    icon: sh:ombi
+                    hide: false
+                  qbittorrent-vpn:
+                    name: qBittorrent
+                    url: http://192.168.1.116:8090
+                    icon: si:qbittorrent
+                    hide: false
+                  sabnzbd:
+                    name: Sabnzbd
+                    url: http://192.168.1.116:8081
+                    icon: sh:sabnzbd
+                    hide: false
+                  jellyfin:
+                    name: Jellyfin
+                    url: http://192.168.1.116:8096
+                    icon: si:jellyfin
+                    hide: false
+                  it-tools:
+                    name: IT-Tools
+                    url: http://192.168.1.116:8088
+                    icon: sh:it-tools
+                    hide: false
+
+      - size: small
+        widgets:
+          - type: group
+            widgets:
+              - type: hacker-news
+                limit: 8
+                collapse-after: 4
+              - type: lobsters
+                limit: 8
+                collapse-after: 4
+              - type: rss
+                title: selfh.st
+                limit: 6
+                collapse-after: 3
+                cache: 30m
+                feeds:
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
+
+  - name: Media
+    columns:
+      - size: small
+        widgets:
+          - type: bookmarks
+            groups:
+              - title: Media stack
+                color: 340 70 60
+                links:
+                  - title: Jellyfin
+                    url: http://192.168.1.116:8096
+                    icon: si:jellyfin
+                  - title: Ombi
+                    url: http://192.168.1.116:3579
+                    icon: sh:ombi
+                  - title: Sonarr
+                    url: http://192.168.1.116:8989
+                    icon: sh:sonarr
+                  - title: Radarr
+                    url: http://192.168.1.116:7878
+                    icon: sh:radarr
+                  - title: Lidarr
+                    url: http://192.168.1.116:8686
+                    icon: sh:lidarr
+                  - title: Readarr
+                    url: http://192.168.1.116:8787
+                    icon: sh:readarr
+                  - title: Prowlarr
+                    url: http://192.168.1.116:9696
+                    icon: sh:prowlarr
+                  - title: qBittorrent
+                    url: http://192.168.1.116:8090
+                    icon: si:qbittorrent
+                  - title: Sabnzbd
+                    url: http://192.168.1.116:8081
+                    icon: sh:sabnzbd
+      - size: full
+        widgets:
           - type: monitor
-            title: Services
+            title: Media services
             cache: 1m
             style: compact
             sites:
-              - title: Glance
-                url: http://192.168.1.116:8089
-                icon: sh:glance-dark
-              - title: Portainer
-                url: http://192.168.1.116:19000
-                icon: si:portainer
-              - title: Vaultwarden
-                url: http://192.168.1.116:8082
-                icon: si:bitwarden
-              - title: Nginx Proxy Manager
-                url: http://192.168.1.116:81
-                icon: si:nginx
-              - title: Home Assistant
-                url: http://192.168.1.116:8123
-                icon: si:homeassistant
               - title: Jellyfin
                 url: http://192.168.1.116:8096
                 icon: si:jellyfin
+              - title: Ombi
+                url: http://192.168.1.116:3579
+                icon: sh:ombi
               - title: Sonarr
                 url: http://192.168.1.116:8989
                 icon: sh:sonarr
@@ -80,110 +320,52 @@ pages:
               - title: Prowlarr
                 url: http://192.168.1.116:9696
                 icon: sh:prowlarr
-              - title: Ombi
-                url: http://192.168.1.116:3579
-                icon: sh:ombi
               - title: qBittorrent
                 url: http://192.168.1.116:8090
                 icon: si:qbittorrent
-              - title: IT-Tools
-                url: http://192.168.1.116:8088
-                icon: sh:it-tools
-
-          - type: docker-containers
-            title: Container Status
-            cache: 30s
-            sock-path: /var/run/docker.sock
-            hide-by-default: true
-            containers:
-              glance:
-                name: Glance
-                url: http://192.168.1.116:8089
-                icon: sh:glance-dark
-                hide: false
-              portainer:
-                name: Portainer
-                url: http://192.168.1.116:19000
-                icon: si:portainer
-                hide: false
-              vaultwarden:
-                name: Vaultwarden
-                url: http://192.168.1.116:8082
-                icon: si:bitwarden
-                hide: false
-              nginx-proxy-manager:
-                name: Nginx Proxy Manager
-                url: http://192.168.1.116:81
-                icon: si:nginx
-                hide: false
-              homeassistant:
-                name: Home Assistant
-                url: http://192.168.1.116:8123
-                icon: si:homeassistant
-                hide: false
-              sonarr:
-                name: Sonarr
-                url: http://192.168.1.116:8989
-                icon: sh:sonarr
-                hide: false
-              radarr:
-                name: Radarr
-                url: http://192.168.1.116:7878
-                icon: sh:radarr
-                hide: false
-              lidarr:
-                name: Lidarr
-                url: http://192.168.1.116:8686
-                icon: sh:lidarr
-                hide: false
-              readarr:
-                name: Readarr
-                url: http://192.168.1.116:8787
-                icon: sh:readarr
-                hide: false
-              prowlarr:
-                name: Prowlarr
-                url: http://192.168.1.116:9696
-                icon: sh:prowlarr
-                hide: false
-              ombi:
-                name: Ombi
-                url: http://192.168.1.116:3579
-                icon: sh:ombi
-                hide: false
-              qbittorrent-vpn:
-                name: qBittorrent
-                url: http://192.168.1.116:8090
-                icon: si:qbittorrent
-                hide: false
-              sabnzbd:
-                name: Sabnzbd
+              - title: Sabnzbd
                 url: http://192.168.1.116:8081
                 icon: sh:sabnzbd
-                hide: false
-              jellyfin:
-                name: Jellyfin
-                url: http://192.168.1.116:8096
-                icon: si:jellyfin
-                hide: false
-              it-tools:
-                name: IT-Tools
-                url: http://192.168.1.116:8088
-                icon: sh:it-tools
-                hide: false
+          - type: releases
+            title: Latest releases
+            cache: 6h
+            collapse-after: 5
+            show-source-icon: true
+            repositories:
+              - glanceapp/glance
+              - jellyfin/jellyfin
+              - vaultwarden/server
+              - ghcr.io/homarr-labs/homarr
 
-      # ─────────────── RIGHT ───────────────
-      - size: small
+  - name: Feed
+    width: wide
+    columns:
+      - size: full
+        widgets:
+          - type: split-column
+            max-columns: 2
+            widgets:
+              - type: hacker-news
+                limit: 15
+                collapse-after: 8
+              - type: lobsters
+                limit: 15
+                collapse-after: 8
+      - size: full
         widgets:
           - type: rss
-            title: News & Updates
+            title: News & blogs
+            style: detailed-list
+            limit: 15
             collapse-after: 5
+            cache: 30m
             feeds:
               - url: https://hnrss.org/frontpage
                 title: Hacker News
+                limit: 5
               - url: https://selfh.st/rss/
                 title: selfh.st
-                limit: 5
+                limit: 4
               - url: https://www.joshwcomeau.com/rss.xml
                 title: Josh Comeau
                 limit: 3
