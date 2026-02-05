@@ -1,10 +1,11 @@
 server:
   port: 8080
 
+# Theme: use HSL values (see https://github.com/glanceapp/glance/blob/main/docs/configuration.md)
 theme:
-  background: dark
-  color: slate
-  contrast: medium
+  background-color: 240 8 9
+  primary-color: 43 50 70
+  contrast-multiplier: 1.1
 
 pages:
   - name: Homelab
