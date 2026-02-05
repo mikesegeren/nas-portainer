@@ -1,19 +1,6 @@
 version: "3.9"
 
 services:
-  heimdall:
-    image: linuxserver/heimdall:latest
-    container_name: heimdall
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${DOCKER_DATA}/heimdall/config:/config
-    ports:
-      - 8080:80
-    restart: unless-stopped
-
   it-tools:
     image: corentinth/it-tools:latest
     container_name: it-tools
@@ -28,17 +15,5 @@ services:
     ports:
       - "8089:8080"
     volumes:
-      - ${DOCKER_DATA}/glance/config:/app/config
+      - ./glance:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
-  homarr:
-    image: ghcr.io/homarr-labs/homarr:latest
-    container_name: homarr
-    restart: unless-stopped
-    ports:
-      - "7575:7575"
-    volumes:
-      - ${DOCKER_DATA}/homarr/appdata:/appdata
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}

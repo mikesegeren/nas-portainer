@@ -1,0 +1,180 @@
+server:
+  port: 8080
+
+theme:
+  background: dark
+  color: slate
+  contrast: medium
+
+pages:
+  - name: Homelab
+    columns:
+      # ─────────────── LEFT ───────────────
+      - size: small
+        widgets:
+          - type: clock
+            hour-format: 24h
+
+          - type: weather
+            location: Breda
+            units: metric
+
+          - type: search
+            search-engine: duckduckgo
+            placeholder: Search the web…
+
+          - type: bookmarks
+            groups:
+              - name: Other
+                links:
+                  - title: NAS
+                    url: https://192.168.1.116
+                    icon: mdi:nas
+                  - title: UniFi
+                    url: https://192.168.1.1
+                    icon: si:ubiquiti
+
+      # ─────────────── CENTER ───────────────
+      - size: full
+        widgets:
+          - type: server-stats
+            servers:
+              - type: local
+                name: Homelab Server
+          - type: monitor
+            title: Services
+            cache: 1m
+            style: compact
+            sites:
+              - title: Glance
+                url: http://192.168.1.116:8089
+                icon: sh:glance-dark
+              - title: Portainer
+                url: http://192.168.1.116:19000
+                icon: si:portainer
+              - title: Home Assistant
+                url: http://192.168.1.116:8123
+                icon: si:homeassistant
+              - title: Jellyfin
+                url: http://192.168.1.116:8096
+                icon: si:jellyfin
+              - title: Sonarr
+                url: http://192.168.1.116:8989
+                icon: sh:sonarr
+              - title: Radarr
+                url: http://192.168.1.116:7878
+                icon: sh:radarr
+              - title: Lidarr
+                url: http://192.168.1.116:8686
+                icon: sh:lidarr
+              - title: Readarr
+                url: http://192.168.1.116:8787
+                icon: sh:readarr
+              - title: Prowlarr
+                url: http://192.168.1.116:9696
+                icon: sh:prowlarr
+              - title: Ombi
+                url: http://192.168.1.116:3579
+                icon: sh:ombi
+              - title: qBittorrent
+                url: http://192.168.1.116:8090
+                icon: si:qbittorrent
+              - title: IT-Tools
+                url: http://192.168.1.116:8088
+                icon: sh:it-tools
+              - title: Obsidian
+                url: http://192.168.1.116:3000
+                icon: si:obsidian
+
+          - type: docker-containers
+            title: Container Status
+            cache: 30s
+            sock-path: /var/run/docker.sock
+            hide-by-default: true
+            containers:
+              glance:
+                name: Glance
+                url: http://192.168.1.116:8089
+                icon: sh:glance-dark
+                hide: false
+              portainer:
+                name: Portainer
+                url: http://192.168.1.116:19000
+                icon: si:portainer
+                hide: false
+              homeassistant:
+                name: Home Assistant
+                url: http://192.168.1.116:8123
+                icon: si:homeassistant
+                hide: false
+              sonarr:
+                name: Sonarr
+                url: http://192.168.1.116:8989
+                icon: sh:sonarr
+                hide: false
+              radarr:
+                name: Radarr
+                url: http://192.168.1.116:7878
+                icon: sh:radarr
+                hide: false
+              lidarr:
+                name: Lidarr
+                url: http://192.168.1.116:8686
+                icon: sh:lidarr
+                hide: false
+              readarr:
+                name: Readarr
+                url: http://192.168.1.116:8787
+                icon: sh:readarr
+                hide: false
+              prowlarr:
+                name: Prowlarr
+                url: http://192.168.1.116:9696
+                icon: sh:prowlarr
+                hide: false
+              ombi:
+                name: Ombi
+                url: http://192.168.1.116:3579
+                icon: sh:ombi
+                hide: false
+              qbittorrent-vpn:
+                name: qBittorrent
+                url: http://192.168.1.116:8090
+                icon: si:qbittorrent
+                hide: false
+              sabnzbd:
+                name: Sabnzbd
+                url: http://192.168.1.116:8081
+                icon: sh:sabnzbd
+                hide: false
+              jellyfin:
+                name: Jellyfin
+                url: http://192.168.1.116:8096
+                icon: si:jellyfin
+                hide: false
+              it-tools:
+                name: IT-Tools
+                url: http://192.168.1.116:8088
+                icon: sh:it-tools
+                hide: false
+              obsidian:
+                name: Obsidian
+                url: http://192.168.1.116:3000
+                icon: si:obsidian
+                hide: false
+
+      # ─────────────── RIGHT ───────────────
+      - size: small
+        widgets:
+          - type: rss
+            title: News & Updates
+            collapse-after: 5
+            feeds:
+              - url: https://hnrss.org/frontpage
+                title: Hacker News
+              - url: https://selfh.st/rss/
+                title: selfh.st
+                limit: 5
+              - url: https://www.joshwcomeau.com/rss.xml
+                title: Josh Comeau
+                limit: 3

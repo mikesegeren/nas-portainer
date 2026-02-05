@@ -4,12 +4,12 @@ Docker Compose stacks for UGREEN NAS, managed via Portainer. Stacks are grouped 
 
 ## Stacks
 
-| Stack            | Compose path                             | Services                                                                        |
-| ---------------- | ---------------------------------------- | ------------------------------------------------------------------------------- |
-| **infra**        | `stacks/infra/docker-compose.yml`        | heimdall (8080), it-tools (8088), glance (8089), homarr (7575)                  |
-| **home**         | `stacks/home/docker-compose.yml`         | home-assistant (host)                                                           |
-| **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, readarr, prowlarr, qbittorrent, sabnzbd |
-| **productivity** | `stacks/productivity/docker-compose.yml` | obsidian (3000)                                                                 |
+| Stack            | Compose path                             | Services                                                                         |
+| ---------------- | ---------------------------------------- | -------------------------------------------------------------------------------- |
+| **infra**        | `stacks/infra/docker-compose.yml`        | glance (8089), it-tools (8088). Glance config: `stacks/infra/glance/glance.yml`. |
+| **home**         | `stacks/home/docker-compose.yml`         | home-assistant (host)                                                            |
+| **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, readarr, prowlarr, qbittorrent, sabnzbd  |
+| **productivity** | `stacks/productivity/docker-compose.yml` | obsidian (3000)                                                                  |
 
 **Media ports:** jellyfin 8096/8920, ombi 3579, sonarr 8989, radarr 7878, lidarr 8686, readarr 8787, prowlarr 9696, qbittorrent 8090/6881, sabnzbd 8081.
 
@@ -23,14 +23,15 @@ Docker Compose stacks for UGREEN NAS, managed via Portainer. Stacks are grouped 
    - `PUID`, `PGID` – from `id` on the NAS
    - `TZ` – e.g. `Europe/Amsterdam`
    - For **media** stack only (qbittorrent): `VPN_USER`, `VPN_PASS`, `LAN_NETWORK`
-   - For **infra** stack (Homarr): `HOMARR_SECRET_ENCRYPTION_KEY` (64-char hex, e.g. `openssl rand -hex 32`)
 
 ## Setup
 
 1. **Environment (for local/CLI use)**
+
    - Copy `.env.example` to `.env` and set paths and IDs for your NAS. For Portainer Git stacks, set these same values in the stack’s Environment variables instead.
 
 2. **Portainer**
+
    - **Stacks** → **Add stack** → **Repository**.
    - **URL**: your repo URL (e.g. `https://github.com/you/nas-portainer.git`).
    - **Compose path**: `stacks/infra/docker-compose.yml`, `stacks/home/docker-compose.yml`, `stacks/media/docker-compose.yml`, or `stacks/productivity/docker-compose.yml`.
@@ -48,3 +49,7 @@ Compose files use defaults that match a typical UGREEN layout:
 - Media: `MEDIA_PATH` for jellyfin, \*arrs, qbittorrent, sabnzbd.
 
 Override via `.env` (or Portainer env vars) so you don’t need to edit the YAML.
+
+### Glance
+
+Glance config is in the repo at `stacks/infra/glance/glance.yml`. The container mounts this directory, so edits take effect automatically (no restart). If you had an existing config under `DOCKER_DATA/glance/config`, copy its contents into `stacks/infra/glance/glance.yml` before or after switching.
