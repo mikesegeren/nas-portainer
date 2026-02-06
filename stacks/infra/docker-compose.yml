@@ -45,16 +45,19 @@ services:
     networks:
       - default
 
-  nginx-proxy-manager:
-    image: jc21/nginx-proxy-manager:latest
-    container_name: nginx-proxy-manager
+  caddy:
+    image: caddy:latest
+    container_name: caddy
     restart: unless-stopped
     ports:
-      - "8080:80"   # HTTP (host 80 in use; for Let's Encrypt, forward 80→8080 on router or use DNS challenge)
-      - "8443:443"  # HTTPS (host 443 in use; forward 443→8443 on router or use https://domain:8443)
-      - "81:81"     # Admin UI
+      - "8080:80"      # HTTP (for Let's Encrypt challenge; router forwards 80 -> 8080)
+      - "8443:443"     # HTTPS (router forwards 443 -> 8443)
+      - "8443:443/udp" # HTTP/3 (QUIC)
     volumes:
-      - ${DOCKER_DATA}/nginx-proxy-manager/data:/data
-      - ${DOCKER_DATA}/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - ${DOCKER_DATA}/caddy/data:/data
+      - ${DOCKER_DATA}/caddy/config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    environment:
+      - VAULTWARDEN_DOMAIN=${VAULTWARDEN_DOMAIN}
     networks:
       - default

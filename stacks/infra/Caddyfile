@@ -1,0 +1,7 @@
+# Caddy configuration for HTTPS reverse proxy
+# Uses VAULTWARDEN_DOMAIN from the environment (e.g. https://vault.example.com)
+# Caddy automatically obtains and renews Let's Encrypt certificates.
+
+{$VAULTWARDEN_DOMAIN} {
+    reverse_proxy vaultwarden:80
+}
