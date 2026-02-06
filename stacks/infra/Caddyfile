@@ -1,7 +1,11 @@
-# Caddy configuration for HTTPS reverse proxy
-# Uses VAULTWARDEN_DOMAIN from the environment (e.g. https://vault.example.com)
-# Caddy automatically obtains and renews Let's Encrypt certificates.
+# Caddy configuration for local-only HTTPS reverse proxy
+# No public DNS or Let's Encrypt; uses Caddy's internal CA instead.
+# Access as: https://<NAS-IP>:8443
 
-{$VAULTWARDEN_DOMAIN} {
+:443 {
+    # Use Caddy's internal CA (self-signed for local use)
+    tls internal
+
+    # Proxy all traffic to Vaultwarden HTTP service
     reverse_proxy vaultwarden:80
 }
