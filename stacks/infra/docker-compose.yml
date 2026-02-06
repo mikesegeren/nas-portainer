@@ -31,7 +31,6 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
-    # Expose for direct LAN access; optional if you only use HTTPS via NPM
     ports:
       - "8082:80"
     volumes:
@@ -39,25 +38,8 @@ services:
     environment:
       - SIGNUPS_ALLOWED=${VAULTWARDEN_SIGNUPS_ALLOWED:-true}
       - ADMIN_TOKEN=${VAULTWARDEN_ADMIN_TOKEN}
-      # Required when behind HTTPS proxy (set to your public URL, e.g. https://vault.example.com)
+      # Optional: set when behind HTTPS proxy (e.g. https://vault.example.com)
       - DOMAIN=${VAULTWARDEN_DOMAIN}
       - WEBSOCKET_ENABLED=true
-    networks:
-      - default
-
-  caddy:
-    image: caddy:latest
-    container_name: caddy
-    restart: unless-stopped
-    ports:
-      - "8080:80"      # HTTP (for Let's Encrypt challenge; router forwards 80 -> 8080)
-      - "8443:443"     # HTTPS (router forwards 443 -> 8443)
-      - "8443:443/udp" # HTTP/3 (QUIC)
-    volumes:
-      - ${DOCKER_DATA}/caddy/data:/data
-      - ${DOCKER_DATA}/caddy/config:/config
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-    environment:
-      - VAULTWARDEN_DOMAIN=${VAULTWARDEN_DOMAIN}
     networks:
       - default
