@@ -137,10 +137,13 @@ services:
     restart: unless-stopped
 
   gphotos-takeout-helper:
-    # Google Photos Takeout Helper - restores metadata and organizes Google Photos backup.
+    # Google Photos Takeout Helper (patched for missing geoDataExif).
     # GPBU_PATH must be the Takeout folder (e.g. .../GPBU/Takeout) so "Google Photos" is inside.
-    # Run the helper on demand: docker exec -it gphotos-takeout-helper google-photos-takeout-helper -i /takeout-input -o /takeout-output
-    image: jgeusebroek/google-photos-takeout-helper:latest
+    # Run on demand: docker exec -it gphotos-takeout-helper google-photos-takeout-helper -i /takeout-input -o /takeout-output
+    build:
+      context: ./gphotos-takeout-helper
+      dockerfile: Dockerfile
+    image: gphotos-takeout-helper:patched
     container_name: gphotos-takeout-helper
     entrypoint: []
     command: ["tail", "-f", "/dev/null"]

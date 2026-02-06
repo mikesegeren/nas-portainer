@@ -112,15 +112,16 @@ Glance config lives on the NAS at **`${DOCKER_DATA}/glance/config`** (e.g. `/vol
 
 ### Google Photos Takeout Helper
 
-The **gphotos-takeout-helper** service in the media stack restores metadata and organizes Google Photos backups exported via Google Takeout. It processes the JSON metadata files and restores EXIF data, timestamps, and organizes photos chronologically.
+The **gphotos-takeout-helper** service in the media stack restores metadata and organizes Google Photos backups exported via Google Takeout. It processes the JSON metadata files and restores EXIF data, timestamps, and organizes photos chronologically. The stack builds a **patched** image (see `stacks/media/gphotos-takeout-helper/`) that fixes a crash when some files have no `geoDataExif` in their JSON (e.g. videos or photos without location).
 
 **Usage:**
 
-1. Ensure your Google Photos backup is in the path specified by `GPBU_PATH` (e.g. `/home/Mike/GPBU`).
-2. The service runs in the background. To process your backup, execute:
+1. Set `GPBU_PATH` to the **Takeout** folder (e.g. `/home/Mike/GPBU/Takeout`) so the "Google Photos" folder is inside it.
+2. Deploy the media stack (Portainer will build the patched image on first deploy).
+3. To process your backup, run:
    ```bash
    docker exec -it gphotos-takeout-helper google-photos-takeout-helper -i /takeout-input -o /takeout-output
    ```
-3. Processed photos with restored metadata will be saved to the path specified by `GPBU_OUTPUT_PATH` (e.g. `/home/Mike/GPBU-restored`).
+4. Processed photos with restored metadata will be saved to `GPBU_OUTPUT_PATH` (e.g. `/home/Mike/GPBU-restored`).
 
 The container stays running (with `restart: "no"`) so you can run the command on-demand when needed. After processing, you can stop the container if desired.
