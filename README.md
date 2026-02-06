@@ -8,7 +8,7 @@ Docker Compose stacks for UGREEN NAS, managed via Portainer. Stacks are grouped 
 | ---------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | **infra**        | `stacks/infra/docker-compose.yml`        | glance (8089), it-tools (8088), vaultwarden (8082), nginx-proxy-manager (8080/8443/81). Glance config: `stacks/infra/glance/glance.yml`. |
 | **home**         | `stacks/home/docker-compose.yml`         | home-assistant (host)                                                                                                                    |
-| **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, readarr, prowlarr, qbittorrent, sabnzbd                                                          |
+| **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, readarr, prowlarr, qbittorrent, sabnzbd, gphotos-takeout-helper                                  |
 | **productivity** | `stacks/productivity/docker-compose.yml` | obsidian-db (5984 – CouchDB backend for Obsidian LiveSync/self-hosted)                                                                   |
 
 **Media ports:** jellyfin 8096/8920, ombi 3579, sonarr 8989, radarr 7878, lidarr 8686, readarr 8787, prowlarr 9696, qbittorrent 8090/6881, sabnzbd 8081.
@@ -50,7 +50,7 @@ Not in these stacks (host/other): **Portainer** 19000, **Home Assistant** 8123 (
    - `PUID`, `PGID` – from `id` on the NAS
    - `TZ` – e.g. `Europe/Amsterdam`
    - For **infra** stack: `VAULTWARDEN_ADMIN_TOKEN`, `VAULTWARDEN_SIGNUPS_ALLOWED`, `VAULTWARDEN_DOMAIN` (HTTPS URL when using NPM; e.g. `https://vault.example.com`)
-   - For **media** stack only (qbittorrent): `VPN_USER`, `VPN_PASS`, `LAN_NETWORK`
+   - For **media** stack: `VPN_USER`, `VPN_PASS`, `LAN_NETWORK` (qbittorrent), `GPBU_PATH` and `GPBU_OUTPUT_PATH` (gphotos-takeout-helper; e.g. `/home/Mike/GPBU` and `/home/Mike/GPBU-restored`)
 
 ## Setup
 
@@ -109,3 +109,18 @@ NPM stores config under `DOCKER_DATA/nginx-proxy-manager` and certificates under
 ### Glance
 
 Glance config lives on the NAS at **`${DOCKER_DATA}/glance/config`** (e.g. `/volume2/docker/glance/config`). Copy the contents of `stacks/infra/glance/` from this repo into that folder once (so `glance.yml` is at `…/glance/config/glance.yml`), then deploy. Edit the config on the NAS; Glance reloads on save. The repo’s `stacks/infra/glance/` is a reference copy.
+
+### Google Photos Takeout Helper
+
+The **gphotos-takeout-helper** service in the media stack restores metadata and organizes Google Photos backups exported via Google Takeout. It processes the JSON metadata files and restores EXIF data, timestamps, and organizes photos chronologically.
+
+**Usage:**
+
+1. Ensure your Google Photos backup is in the path specified by `GPBU_PATH` (e.g. `/home/Mike/GPBU`).
+2. The service runs in the background. To process your backup, execute:
+   ```bash
+   docker exec -it gphotos-takeout-helper google-photos-takeout-helper -i /takeout-input -o /takeout-output
+   ```
+3. Processed photos with restored metadata will be saved to the path specified by `GPBU_OUTPUT_PATH` (e.g. `/home/Mike/GPBU-restored`).
+
+The container stays running (with `restart: "no"`) so you can run the command on-demand when needed. After processing, you can stop the container if desired.

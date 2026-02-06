@@ -135,3 +135,17 @@ services:
     ports:
       - 8081:8080
     restart: unless-stopped
+
+  gphotos-takeout-helper:
+    # Google Photos Takeout Helper - restores metadata and organizes Google Photos backup.
+    # GPBU_PATH must be the Takeout folder (e.g. .../GPBU/Takeout) so "Google Photos" is inside.
+    # Usage: docker exec -it gphotos-takeout-helper google-photos-takeout-helper -i /takeout-input -o /takeout-output
+    image: jgeusebroek/google-photos-takeout-helper:latest
+    container_name: gphotos-takeout-helper
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${GPBU_PATH}:/takeout-input:ro
+      - ${GPBU_OUTPUT_PATH}:/takeout-output:rw
+    command: tail -f /dev/null
+    restart: "no"
