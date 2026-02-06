@@ -147,6 +147,6 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
-      - ${GPBU_PATH}:/takeout-input:ro
+      - ${GPBU_PATH}:/takeout-input:rw
       - ${GPBU_OUTPUT_PATH}:/takeout-output:rw
     restart: "no"
