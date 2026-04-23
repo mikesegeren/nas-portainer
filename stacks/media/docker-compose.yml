@@ -135,21 +135,3 @@ services:
     ports:
       - 8081:8080
     restart: unless-stopped
-
-  gphotos-takeout-helper:
-    # Google Photos Takeout Helper (patched for missing geoDataExif).
-    # GPBU_PATH must be the Takeout folder (e.g. .../GPBU/Takeout) so "Google Photos" is inside.
-    # Run on demand: docker exec -it gphotos-takeout-helper google-photos-takeout-helper -i /takeout-input -o /takeout-output
-    build:
-      context: ./gphotos-takeout-helper
-      dockerfile: Dockerfile
-    image: gphotos-takeout-helper:patched
-    container_name: gphotos-takeout-helper
-    entrypoint: []
-    command: ["tail", "-f", "/dev/null"]
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ${GPBU_PATH}:/takeout-input:rw
-      - ${GPBU_OUTPUT_PATH}:/takeout-output:rw
-    restart: "no"
