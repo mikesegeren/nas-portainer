@@ -10,7 +10,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${DOCKER_DATA}/jellyfin/config:/config
-      - ${MEDIA_PATH}:/data
+      - ${MEDIA_PATH}:/media
     ports:
       - 8096:8096
       - 8920:8920
