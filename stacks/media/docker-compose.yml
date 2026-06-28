@@ -147,7 +147,7 @@ services:
       - ${DOCKER_DATA}/calibre/config:/config
       - ${MEDIA_PATH}/books:/books
     ports:
-      - 8082:8080
+      - 8085:8080
     restart: unless-stopped
 
   calibre-web:
