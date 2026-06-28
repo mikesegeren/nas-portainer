@@ -43,8 +43,21 @@ services:
     environment:
       - SIGNUPS_ALLOWED=${VAULTWARDEN_SIGNUPS_ALLOWED:-true}
       - ADMIN_TOKEN=${VAULTWARDEN_ADMIN_TOKEN}
-      # Optional: set when behind HTTPS proxy (e.g. https://vault.example.com)
       - DOMAIN=${VAULTWARDEN_DOMAIN}
       - WEBSOCKET_ENABLED=true
+    networks:
+      - default
+
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"
+    volumes:
+      - ${DOCKER_DATA}/nginx-proxy-manager/data:/data
+      - ${DOCKER_DATA}/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
     networks:
       - default
