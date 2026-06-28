@@ -53,7 +53,7 @@ services:
     container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8880:80"
       - "8443:443"
       - "81:81"
     volumes:
