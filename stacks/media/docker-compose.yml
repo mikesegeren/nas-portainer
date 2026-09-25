@@ -71,18 +71,18 @@ services:
       - 8686:8686
     restart: unless-stopped
 
-  readarr:
-    image: silvereyestudios/readarr:latest
-    container_name: readarr
+  lazylibrarian:
+    image: lscr.io/linuxserver/lazylibrarian:latest
+    container_name: lazylibrarian
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${DOCKER_DATA}/readarr/config:/config
-      - ${MEDIA_PATH}:/downloads
+      - ${DOCKER_DATA}/lazylibrarian/config:/config
+      - ${MEDIA_PATH}:/data
     ports:
-      - 8787:8787
+      - 5299:5299
     restart: unless-stopped
 
   prowlarr:
@@ -131,36 +131,24 @@ services:
       - TZ=${TZ}
     volumes:
       - ${DOCKER_DATA}/sabnzbd/config:/config
-      - ${MEDIA_PATH}:/downloads
+      - ${MEDIA_PATH}:/data
     ports:
       - 8081:8080
     restart: unless-stopped
 
-  calibre:
-    image: lscr.io/linuxserver/calibre:latest
-    container_name: calibre
+  # Imports books dropped in books-ingest (files there are DELETED after import),
+  # converts to kepub and serves them to the Kobo via Kobo sync.
+  calibre-web-automated:
+    image: crocodilestick/calibre-web-automated:latest
+    container_name: calibre-web-automated
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${DOCKER_DATA}/calibre/config:/config
-      - ${MEDIA_PATH}/books:/books
-    ports:
-      - 8085:8080
-    restart: unless-stopped
-
-  calibre-web:
-    image: lscr.io/linuxserver/calibre-web:latest
-    container_name: calibre-web
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - DOCKER_MODS=linuxserver/mods:universal-calibre
-    volumes:
-      - ${DOCKER_DATA}/calibre-web/config:/config
-      - ${MEDIA_PATH}/books:/books
+      - ${DOCKER_DATA}/calibre-web-automated/config:/config
+      - ${MEDIA_PATH}/books-ingest:/cwa-book-ingest
+      - ${MEDIA_PATH}/books:/calibre-library
     ports:
       - 8083:8083
     restart: unless-stopped

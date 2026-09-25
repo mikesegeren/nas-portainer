@@ -140,9 +140,12 @@ pages:
                   - title: Lidarr
                     url: http://192.168.1.116:8686
                     icon: sh:lidarr
-                  - title: Readarr
-                    url: http://192.168.1.116:8787
-                    icon: sh:readarr
+                  - title: LazyLibrarian
+                    url: http://192.168.1.116:5299
+                    icon: sh:lazylibrarian
+                  - title: Calibre-Web
+                    url: http://192.168.1.116:8083
+                    icon: sh:calibre-web
                   - title: Prowlarr
                     url: http://192.168.1.116:9696
                     icon: sh:prowlarr
@@ -201,10 +204,15 @@ pages:
                     url: http://192.168.1.116:8686
                     icon: sh:lidarr
                     hide: false
-                  readarr:
-                    name: Readarr
-                    url: http://192.168.1.116:8787
-                    icon: sh:readarr
+                  lazylibrarian:
+                    name: LazyLibrarian
+                    url: http://192.168.1.116:5299
+                    icon: sh:lazylibrarian
+                    hide: false
+                  calibre-web-automated:
+                    name: Calibre-Web
+                    url: http://192.168.1.116:8083
+                    icon: sh:calibre-web
                     hide: false
                   prowlarr:
                     name: Prowlarr
@@ -280,9 +288,12 @@ pages:
                   - title: Lidarr
                     url: http://192.168.1.116:8686
                     icon: sh:lidarr
-                  - title: Readarr
-                    url: http://192.168.1.116:8787
-                    icon: sh:readarr
+                  - title: LazyLibrarian
+                    url: http://192.168.1.116:5299
+                    icon: sh:lazylibrarian
+                  - title: Calibre-Web
+                    url: http://192.168.1.116:8083
+                    icon: sh:calibre-web
                   - title: Prowlarr
                     url: http://192.168.1.116:9696
                     icon: sh:prowlarr
@@ -314,9 +325,12 @@ pages:
               - title: Lidarr
                 url: http://192.168.1.116:8686
                 icon: sh:lidarr
-              - title: Readarr
-                url: http://192.168.1.116:8787
-                icon: sh:readarr
+              - title: LazyLibrarian
+                url: http://192.168.1.116:5299
+                icon: sh:lazylibrarian
+              - title: Calibre-Web
+                url: http://192.168.1.116:8083
+                icon: sh:calibre-web
               - title: Prowlarr
                 url: http://192.168.1.116:9696
                 icon: sh:prowlarr
