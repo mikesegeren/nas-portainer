@@ -76,9 +76,6 @@ pages:
                   - title: Portainer
                     url: http://192.168.1.116:19000
                     icon: si:portainer
-                  - title: Vaultwarden
-                    url: http://192.168.1.116:8082
-                    icon: si:bitwarden
                   - title: NPM
                     url: http://192.168.1.116:81
                     icon: si:nginx
@@ -119,9 +116,6 @@ pages:
                   - title: Portainer
                     url: http://192.168.1.116:19000
                     icon: si:portainer
-                  - title: Vaultwarden
-                    url: http://192.168.1.116:8082
-                    icon: si:bitwarden
                   - title: NPM
                     url: http://192.168.1.116:81
                     icon: si:nginx
@@ -152,12 +146,12 @@ pages:
                   - title: Prowlarr
                     url: http://192.168.1.116:9696
                     icon: sh:prowlarr
-                  - title: Ombi
-                    url: http://192.168.1.116:3579
-                    icon: sh:ombi
-                  - title: qBittorrent
-                    url: http://192.168.1.116:8090
-                    icon: si:qbittorrent
+                  - title: Seerr
+                    url: http://192.168.1.116:5055
+                    icon: sh:seerr
+                  - title: Sabnzbd
+                    url: http://192.168.1.116:8081
+                    icon: sh:sabnzbd
                   - title: IT-Tools
                     url: http://192.168.1.116:8088
                     icon: sh:it-tools
@@ -176,11 +170,6 @@ pages:
                     name: Portainer
                     url: http://192.168.1.116:19000
                     icon: si:portainer
-                    hide: false
-                  vaultwarden:
-                    name: Vaultwarden
-                    url: http://192.168.1.116:8082
-                    icon: si:bitwarden
                     hide: false
                   nginx-proxy-manager:
                     name: NPM
@@ -227,15 +216,10 @@ pages:
                     url: http://192.168.1.116:9696
                     icon: sh:prowlarr
                     hide: false
-                  ombi:
-                    name: Ombi
-                    url: http://192.168.1.116:3579
-                    icon: sh:ombi
-                    hide: false
-                  qbittorrent-vpn:
-                    name: qBittorrent
-                    url: http://192.168.1.116:8090
-                    icon: si:qbittorrent
+                  seerr:
+                    name: Seerr
+                    url: http://192.168.1.116:5055
+                    icon: sh:seerr
                     hide: false
                   sabnzbd:
                     name: Sabnzbd
@@ -284,9 +268,9 @@ pages:
                   - title: Jellyfin
                     url: http://192.168.1.116:8096
                     icon: si:jellyfin
-                  - title: Ombi
-                    url: http://192.168.1.116:3579
-                    icon: sh:ombi
+                  - title: Seerr
+                    url: http://192.168.1.116:5055
+                    icon: sh:seerr
                   - title: Sonarr
                     url: http://192.168.1.116:8989
                     icon: sh:sonarr
@@ -308,9 +292,6 @@ pages:
                   - title: Prowlarr
                     url: http://192.168.1.116:9696
                     icon: sh:prowlarr
-                  - title: qBittorrent
-                    url: http://192.168.1.116:8090
-                    icon: si:qbittorrent
                   - title: Sabnzbd
                     url: http://192.168.1.116:8081
                     icon: sh:sabnzbd
@@ -324,9 +305,9 @@ pages:
               - title: Jellyfin
                 url: http://192.168.1.116:8096
                 icon: si:jellyfin
-              - title: Ombi
-                url: http://192.168.1.116:3579
-                icon: sh:ombi
+              - title: Seerr
+                url: http://192.168.1.116:5055
+                icon: sh:seerr
               - title: Sonarr
                 url: http://192.168.1.116:8989
                 icon: sh:sonarr
@@ -348,9 +329,6 @@ pages:
               - title: Prowlarr
                 url: http://192.168.1.116:9696
                 icon: sh:prowlarr
-              - title: qBittorrent
-                url: http://192.168.1.116:8090
-                icon: si:qbittorrent
               - title: Sabnzbd
                 url: http://192.168.1.116:8081
                 icon: sh:sabnzbd
@@ -362,8 +340,8 @@ pages:
             repositories:
               - glanceapp/glance
               - jellyfin/jellyfin
-              - vaultwarden/server
-              - ghcr.io/homarr-labs/homarr
+              - seerr-team/seerr
+              - advplyr/audiobookshelf
 
   - name: Feed
     width: wide

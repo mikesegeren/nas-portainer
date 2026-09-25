@@ -1,8 +1,6 @@
-version: "3.9"
-
 services:
   jellyfin:
-    image: linuxserver/jellyfin
+    image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     environment:
       - PUID=${PUID}
@@ -16,17 +14,17 @@ services:
       - 8920:8920
     restart: unless-stopped
 
-  ombi:
-    image: linuxserver/ombi
-    container_name: ombi
+  # Seerr (successor of Jellyseerr) runs as UID 1000: create and chown ${DOCKER_DATA}/seerr/config to 1000:1000 first.
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    init: true
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${DOCKER_DATA}/ombi/config:/config
+      - ${DOCKER_DATA}/seerr/config:/app/config
     ports:
-      - 3579:3579
+      - 5055:5055
     restart: unless-stopped
 
   sonarr:
@@ -58,7 +56,7 @@ services:
     restart: unless-stopped
 
   lidarr:
-    image: linuxserver/lidarr:latest
+    image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
     environment:
       - PUID=${PUID}
@@ -98,32 +96,8 @@ services:
       - 9696:9696
     restart: unless-stopped
 
-  qbittorrent:
-    image: binhex/arch-qbittorrentvpn
-    container_name: qbittorrent-vpn
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - VPN_ENABLED=yes
-      - VPN_PROV=nordvpn
-      - LAN_NETWORK=${LAN_NETWORK}
-      - VPN_USER=${VPN_USER}
-      - VPN_PASS=${VPN_PASS}
-      - WEBUI_PORT=8090
-    volumes:
-      - ${DOCKER_DATA}/qbittorrent/config:/config
-      - ${MEDIA_PATH}:/data
-    ports:
-      - 8090:8090
-      - 6881:6881
-      - 6881:6881/udp
-    restart: unless-stopped
-
   sabnzbd:
-    image: linuxserver/sabnzbd:latest
+    image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
     environment:
       - PUID=${PUID}
