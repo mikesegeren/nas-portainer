@@ -8,10 +8,10 @@ Docker Compose stacks for UGREEN NAS, managed via Portainer. Stacks are grouped 
 | ---------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | **infra**        | `stacks/infra/docker-compose.yml`        | glance (8089), it-tools (8088), vaultwarden (8082), nginx-proxy-manager (8880/8443/81). Glance config: `stacks/infra/glance/glance.yml`. |
 | **home**         | `stacks/home/docker-compose.yml`         | home-assistant (host)                                                                                                                    |
-| **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, lazylibrarian, prowlarr, qbittorrent, sabnzbd, calibre-web-automated                              |
+| **media**        | `stacks/media/docker-compose.yml`        | jellyfin, ombi, sonarr, radarr, lidarr, lazylibrarian, prowlarr, qbittorrent, sabnzbd, calibre-web-automated, audiobookshelf              |
 | **productivity** | `stacks/productivity/docker-compose.yml` | obsidian-db (5984 – CouchDB backend for Obsidian LiveSync/self-hosted)                                                                   |
 
-**Media ports:** jellyfin 8096/8920, ombi 3579, sonarr 8989, radarr 7878, lidarr 8686, lazylibrarian 5299, prowlarr 9696, qbittorrent 8090/6881, sabnzbd 8081, calibre-web-automated 8083.
+**Media ports:** jellyfin 8096/8920, ombi 3579, sonarr 8989, radarr 7878, lidarr 8686, lazylibrarian 5299, prowlarr 9696, qbittorrent 8090/6881, sabnzbd 8081, calibre-web-automated 8083, audiobookshelf 13378.
 
 ### Port mapping reference (no collisions)
 
@@ -37,6 +37,7 @@ All host ports used by the stacks in this repo (check here before adding new ser
 |      8920 | media        | jellyfin (HTTPS)               |
 |      8989 | media        | sonarr                         |
 |      9696 | media        | prowlarr                       |
+|     13378 | media        | audiobookshelf                 |
 |      6881 | media        | qbittorrent (BT TCP+UDP)       |
 
 Not in these stacks (host/other): **Portainer** 19000, **Home Assistant** 8123 (host network). The NAS may also use **80** and **443** (hence NPM uses 8880/8443).
@@ -84,6 +85,7 @@ downloads/{torrents,usenet}/{tv,movies,music,books}
 tv/  movies/  music/        # root folders: /data/tv, /data/movies, /data/music
 books/                      # Calibre library (managed by calibre-web-automated)
 books-ingest/               # drop zone for new books – emptied after import
+audiobooks/                 # Audiobookshelf library (LazyLibrarian audio folder)
 ```
 
 In the \*arrs, add download clients by container name with the **container** port: `sabnzbd:8080`, `qbittorrent:8090`.
@@ -101,6 +103,15 @@ Flow: **LazyLibrarian** (search/download via Prowlarr + qbittorrent/sabnzbd) →
    - Config → Downloaders: qBittorrent `qbittorrent:8090` (category `books`, download dir `/data/downloads/torrents/books`) and/or SABnzbd `sabnzbd:8080` (API key from SABnzbd, category `books`).
    - Config → Processing: *eBook Library Folder* = `/data/books-ingest`. Leave torrents seeding (LazyLibrarian copies, it doesn't move).
    - Prowlarr → Settings → Apps → add **LazyLibrarian** (`http://lazylibrarian:5299`, API key from LazyLibrarian → Config → Interface) so indexers sync automatically.
+
+### Audiobooks
+
+Flow: **LazyLibrarian** → `audiobooks/` → **Audiobookshelf** (`http://<NAS-IP>:13378`) → Audiobookshelf app (iOS/Android) with offline downloads and progress sync per user.
+
+1. First visit creates the root (admin) account. Add a user per listener under Settings → Users.
+2. Libraries → Add library → type **Books**, folder `/audiobooks`. Enable *Watch for changes* (default) so new downloads appear automatically.
+3. LazyLibrarian → Config → Processing: *Audio Library Folder* = `/data/audiobooks`, *Audiobook folder format* `$Author/$Title` (ABS expects `Author/Title/files`).
+4. In the app, set the server address to `http://<NAS-IP>:13378`.
 
 Books can also be added by hand: drop an epub in `books-ingest/` or upload via the CWA web UI.
 

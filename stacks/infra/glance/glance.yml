@@ -146,6 +146,9 @@ pages:
                   - title: Calibre-Web
                     url: http://192.168.1.116:8083
                     icon: sh:calibre-web
+                  - title: Audiobookshelf
+                    url: http://192.168.1.116:13378
+                    icon: sh:audiobookshelf
                   - title: Prowlarr
                     url: http://192.168.1.116:9696
                     icon: sh:prowlarr
@@ -213,6 +216,11 @@ pages:
                     name: Calibre-Web
                     url: http://192.168.1.116:8083
                     icon: sh:calibre-web
+                    hide: false
+                  audiobookshelf:
+                    name: Audiobookshelf
+                    url: http://192.168.1.116:13378
+                    icon: sh:audiobookshelf
                     hide: false
                   prowlarr:
                     name: Prowlarr
@@ -294,6 +302,9 @@ pages:
                   - title: Calibre-Web
                     url: http://192.168.1.116:8083
                     icon: sh:calibre-web
+                  - title: Audiobookshelf
+                    url: http://192.168.1.116:13378
+                    icon: sh:audiobookshelf
                   - title: Prowlarr
                     url: http://192.168.1.116:9696
                     icon: sh:prowlarr
@@ -331,6 +342,9 @@ pages:
               - title: Calibre-Web
                 url: http://192.168.1.116:8083
                 icon: sh:calibre-web
+              - title: Audiobookshelf
+                url: http://192.168.1.116:13378
+                icon: sh:audiobookshelf
               - title: Prowlarr
                 url: http://192.168.1.116:9696
                 icon: sh:prowlarr

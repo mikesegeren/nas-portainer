@@ -152,3 +152,17 @@ services:
     ports:
       - 8083:8083
     restart: unless-stopped
+
+  # Runs as root (upstream default): with `user:` Docker creates missing bind dirs as root and ABS can't write them.
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${DOCKER_DATA}/audiobookshelf/config:/config
+      - ${DOCKER_DATA}/audiobookshelf/metadata:/metadata
+      - ${MEDIA_PATH}/audiobooks:/audiobooks
+    ports:
+      - 13378:80
+    restart: unless-stopped
